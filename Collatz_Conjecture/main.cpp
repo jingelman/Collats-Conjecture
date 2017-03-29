@@ -3,6 +3,8 @@
 #include <limits>
 #include <random>
 
+#include <string>
+
 #include "Image.h"
 
 #define PI 3.14159265
@@ -151,7 +153,8 @@ int main()
 	}
 
 	TGAImage *img = new TGAImage(WIDTH, HEIGHT);
-	const char imageName[20] = "result.tga";
+	const std::string folder = "..\\Result\\";
+	const std::string fileName = "result.tga";
 
 	Colour color;
 	color.r = color.g = color.b = color.a = 255;
@@ -172,7 +175,7 @@ int main()
 	}
 
 	
-	img->WriteImage(imageName);
+	img->WriteImage(folder + fileName);
 
 	delete img;
 
