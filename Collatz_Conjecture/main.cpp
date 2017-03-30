@@ -1,24 +1,17 @@
-
 #include <vector>
 #include <limits>
 #include <random>
-
 #include <string>
 
 #include "Image.h"
 
 #define PI 3.14159265
-
-#define VECTORSIZE 40
-
-#define WIDTH 600
-#define HEIGHT 600
-
+#define VECTORSIZE 10000
+#define WIDTH 1000
+#define HEIGHT 1000
 #define LINELENGTH 10
-
 #define DEFAULTANGLE 90
 #define ANGLECHANGE 15
-
 #define MAXVALUE 500
 #define MINVALUE 20
 
@@ -31,27 +24,11 @@ int randomGenerator(const int min, const int max)
 	return dis(gen);
 }
 
-int findMax(const vector<vector<uint32_t>> &vec)
-{
-	int maxVal = 0;
-
-	for(int i = 0; i < vec.size(); ++i)
-	{
-		if (maxVal < vec[i][0])
-			maxVal = vec[i][0];
-	}
-
-	return maxVal;
-}
-
 void fillWithRandom(vector<uint32_t> &vec)
 {
-	int startVal, size = vec.size();
-
-	for (int i = 0; i < size; ++i)
+	for (int i = 0; i < vec.size(); ++i)
 	{
-		startVal = randomGenerator(MINVALUE, MAXVALUE);
-		vec[i] = startVal;
+		vec[i] = randomGenerator(MINVALUE, MAXVALUE);;
 	}
 }
 
@@ -135,14 +112,14 @@ void drawCollatzConjecture(TGAImage &img, const vector<uint32_t> &vec)
 	}
 }
 
+
 int main()
 {
 	vector<vector<uint32_t>> cc(VECTORSIZE);
 	vector<uint32_t> n(VECTORSIZE);
 
 	fillWithRandom(n);
-		
-	//#pragma omp parallel
+
 	for (uint32_t i= 0; i < VECTORSIZE; ++i)
 	{
 		while (n[i] != 1)
@@ -167,14 +144,12 @@ int main()
 		}
 	}
 	
-	//int maxVal = findMax(cc);
-
+	#pragma omp parallel
 	for(const auto &v : cc)
 	{
 		drawCollatzConjecture(*img, v);
 	}
 
-	
 	img->WriteImage(folder + fileName);
 
 	delete img;
